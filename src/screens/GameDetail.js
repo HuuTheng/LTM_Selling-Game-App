@@ -21,13 +21,12 @@ const formatPrice = (price, isOwned) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
 };
 
-export default function GameDetail({ route }) {
+export default function GameDetail({ route, navigation }) {
   const { game } = route.params;
   
   // State quản lý media hiện tại
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Chuẩn bị danh sách media
   const mediaData = [
     ...(game.youtube_id ? [{ id: 'trailer', type: 'video', youtube_id: game.youtube_id }] : []),
     { id: 'main_img', type: 'image', uri: game.image }
@@ -35,7 +34,6 @@ export default function GameDetail({ route }) {
 
   const flatListRef = useRef(null);
 
-  // Xử lý khi vuốt thay đổi media
   const onScroll = (event) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(contentOffsetX / width);
@@ -44,7 +42,6 @@ export default function GameDetail({ route }) {
     }
   };
 
-  // Render media lớn (có thể vuốt)
   const renderMainMedia = ({ item, index }) => {
     return (
       <View style={styles.mainMediaContainer}>
@@ -101,7 +98,7 @@ export default function GameDetail({ route }) {
       <StatusBar barStyle="light-content" />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         
-        {/* Media Section - Có thể vuốt ngang */}
+        {/* Media Section */}
         <View style={styles.mediaContainer}>
           <FlatList
             ref={flatListRef}
@@ -118,7 +115,7 @@ export default function GameDetail({ route }) {
             style={styles.mainMediaFlatList}
           />
 
-          {/* Thumbnails - nằm giữa */}
+          {/* Thumbnails */}
           <View style={styles.thumbnailContainer}>
             <FlatList
               data={mediaData}
@@ -131,7 +128,7 @@ export default function GameDetail({ route }) {
           </View>
         </View>
 
-        {/* Info Section - Đã tích hợp logic Đã có sẵn */}
+        {/* Info Section */}
         <View style={styles.infoSection}>
           <Text style={styles.gameName}>{game.title}</Text>
           <Text style={styles.studioText}>{game.studio}</Text>
@@ -148,6 +145,7 @@ export default function GameDetail({ route }) {
               game.isOwned && { backgroundColor: '#555' } 
             ]}
             disabled={game.isOwned}
+            onPress={() => navigation.navigate('Payment', { game: game })}
           >
             <Text style={styles.buyNowText}>
               {game.isOwned ? "ĐÃ CÓ SẴN" : "MUA NGAY"}

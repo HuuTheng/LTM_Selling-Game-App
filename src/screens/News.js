@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 import newsData from "../data/news.json";
-import { NEWS_IMAGES } from "../constants/images"; // <-- ĐÃ THÊM
+import { NEWS_IMAGES } from "../constants/images";
 
 const { width } = Dimensions.get("window");
 const BANNER_H = width * 1.7; 
@@ -37,7 +37,7 @@ export default function News({ navigation }) {
 
   const availableForCats = remainingData.filter(item => !randomNewsIds.includes(item.id));
 
-  // Lọc theo Tags từ dữ liệu JSON của bạn
+  // Lọc theo Tags từ dữ liệu JSON
   const tinGameArticles = availableForCats
     .filter(item => item.tags.includes("tin-game"))
     .slice(0, 4);
@@ -75,7 +75,6 @@ export default function News({ navigation }) {
       style={styles.bannerItem}
       onPress={() => handlePress(item)}
     >
-      {/* THAY ĐỔI: Gọi ảnh từ NEWS_IMAGES mapping */}
       <Image 
         source={NEWS_IMAGES[item.thumbnail]} 
         style={styles.bannerImage} 
@@ -101,7 +100,6 @@ export default function News({ navigation }) {
           activeOpacity={0.8}
           onPress={() => handlePress(item)}
         >
-          {/* THAY ĐỔI: Gọi ảnh từ NEWS_IMAGES mapping */}
           <Image 
             source={NEWS_IMAGES[item.thumbnail]} 
             style={styles.newsThumbnail} 

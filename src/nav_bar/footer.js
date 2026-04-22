@@ -12,7 +12,6 @@ const Footer = () => {
       <View style={styles.container}>
 
         <View style={styles.grid}>
-          {/* Cột Nguồn tài nguyên */}
           <View style={styles.column}>
             <Text style={styles.title}>Nguồn tài nguyên</Text>
             <TouchableOpacity onPress={() => openLink('https://github.com/HuuTheng/LTM_Selling-Game-App.git')}>
