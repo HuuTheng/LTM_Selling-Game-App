@@ -5,7 +5,9 @@ import { GAME_IMAGES } from '../constants/images';
 
 const { width } = Dimensions.get('window');
 
-const formatPrice = (price) => {
+// Hàm định dạng giá tiền và kiểm tra trạng thái sở hữu
+const formatPrice = (price, isOwned) => {
+  if (isOwned) return "Đã có sẵn";
   if (price === 0) return "Miễn phí";
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
 };
@@ -19,7 +21,7 @@ export default function GameDetail({ route }) {
       <StatusBar barStyle="light-content" />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         
-        {/* Media Section */}
+        {/* Media Section: Hiển thị Trailer hoặc Ảnh */}
         <View style={styles.mediaContainer}>
           <View style={styles.mainMedia}>
             {activeMedia === 'video' && game.youtube_id ? (
@@ -39,22 +41,46 @@ export default function GameDetail({ route }) {
 
           <View style={styles.thumbnailRow}>
             {game.youtube_id && (
-              <TouchableOpacity onPress={() => setActiveMedia('video')} style={[styles.thumbnailBtn, activeMedia === 'video' && styles.activeThumb]}>
-                <View style={styles.thumbPlaceholder}><Text style={styles.thumbText}>TRAILER</Text></View>
+              <TouchableOpacity 
+                onPress={() => setActiveMedia('video')} 
+                style={[styles.thumbnailBtn, activeMedia === 'video' && styles.activeThumb]}
+              >
+                <View style={styles.thumbPlaceholder}>
+                  <Text style={styles.thumbText}>TRAILER</Text>
+                </View>
               </TouchableOpacity>
             )}
-            <TouchableOpacity onPress={() => setActiveMedia('image')} style={[styles.thumbnailBtn, activeMedia === 'image' && styles.activeThumb]}>
+            <TouchableOpacity 
+              onPress={() => setActiveMedia('image')} 
+              style={[styles.thumbnailBtn, activeMedia === 'image' && styles.activeThumb]}
+            >
               <Text style={[styles.thumbText, {textAlign: 'center', marginTop: 12}]}>ẢNH</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Info Section */}
+        {/* Info Section: Thông tin tên, studio và giá */}
         <View style={styles.infoSection}>
           <Text style={styles.gameName}>{game.title}</Text>
           <Text style={styles.studioText}>{game.studio}</Text>
-          <Text style={styles.priceText}>{formatPrice(game.price)}</Text>
-          <TouchableOpacity style={styles.buyNowBtn}><Text style={styles.buyNowText}>MUA NGAY</Text></TouchableOpacity>
+          
+          {/* Giá tiền: Đổi màu xám nếu đã sở hữu */}
+          <Text style={[styles.priceText, game.isOwned && { color: '#888' }]}>
+            {formatPrice(game.price, game.isOwned)}
+          </Text>
+
+          {/* Nút hành động: Tự động đổi style và khóa khi đã có game */}
+          <TouchableOpacity 
+            style={[
+              styles.buyNowBtn, 
+              game.isOwned && { backgroundColor: '#555' } // Màu xám nhạt khi đã sở hữu
+            ]}
+            disabled={game.isOwned} // Vô hiệu hóa khả năng nhấn
+          >
+            <Text style={styles.buyNowText}>
+              {game.isOwned ? "ĐÃ CÓ SẴN" : "MUA NGAY"}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Description & Categories */}
@@ -67,7 +93,9 @@ export default function GameDetail({ route }) {
           <Text style={styles.sectionTitle}>THỂ LOẠI</Text>
           <View style={styles.categoryContainer}>
             {game.categories.map((cat, index) => (
-              <View key={index} style={styles.categoryBadge}><Text style={styles.categoryText}>{cat}</Text></View>
+              <View key={index} style={styles.categoryBadge}>
+                <Text style={styles.categoryText}>{cat}</Text>
+              </View>
             ))}
           </View>
         </View>
@@ -94,7 +122,15 @@ const styles = StyleSheet.create({
   buyNowBtn: { backgroundColor: '#2563eb', paddingVertical: 12, borderRadius: 8, alignItems: 'center' },
   buyNowText: { color: '#fff', fontWeight: 'bold' },
   section: { paddingHorizontal: 20, marginTop: 25 },
-  sectionTitle: { color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10, borderLeftWidth: 3, borderLeftColor: '#00f5ff', paddingLeft: 10 },
+  sectionTitle: { 
+    color: '#fff', 
+    fontSize: 18, 
+    fontWeight: 'bold', 
+    marginBottom: 10, 
+    borderLeftWidth: 3, 
+    borderLeftColor: '#00f5ff', 
+    paddingLeft: 10 
+  },
   descriptionText: { color: '#ccc', lineHeight: 22 },
   categoryContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   categoryBadge: { backgroundColor: '#333', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 },
