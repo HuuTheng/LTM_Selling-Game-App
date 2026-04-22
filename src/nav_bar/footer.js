@@ -1,6 +1,6 @@
 // src/footer/Footer.js
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Image } from 'react-native'; // Thêm Image
 
 const Footer = () => {
   const openLink = (url) => {
@@ -15,7 +15,7 @@ const Footer = () => {
           {/* Cột Nguồn tài nguyên */}
           <View style={styles.column}>
             <Text style={styles.title}>Nguồn tài nguyên</Text>
-            <TouchableOpacity onPress={() => openLink('https://github.com/TrungHieu163/LTWNC_Selling-Game-Website')}>
+            <TouchableOpacity onPress={() => openLink('https://github.com/HuuTheng/LTM_Selling-Game-App.git')}>
               <Text style={styles.link}>GitHub Repository</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => openLink('https://github.com/HuuTheng')}>
@@ -27,34 +27,51 @@ const Footer = () => {
             <TouchableOpacity onPress={() => openLink('https://github.com/phuc3015-bit')}>
               <Text style={styles.link}>Nguyễn Trọng Phúc</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => openLink('https://youtu.be/dQw4w9WgXcQ?si=CzfzkQCUm8JTdqPd')}>
+              <Text style={styles.link}>About Us</Text>
+            </TouchableOpacity>
           </View>
 
-          {/* Cột Liên kết */}
           <View style={styles.column}>
             <Text style={styles.title}>Liên kết</Text>
             
-            <TouchableOpacity style={[styles.socialBtn, {backgroundColor: '#5865F2'}]} 
+            <TouchableOpacity style={[styles.socialBtn, {backgroundColor: '#18119ef7'}]} 
               onPress={() => openLink('https://discord.com/invite/mixigaming')}>
-              <Text style={styles.socialIcon}>D</Text>
+              <Image 
+                source={require('../../assets/anh/discord.png')} 
+                style={styles.socialIconImage} 
+              />
               <Text style={styles.socialText}>Discord</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.socialBtn, {backgroundColor: '#FF0000'}]} 
+            <TouchableOpacity style={[styles.socialBtn, {backgroundColor: '#bc1717'}]} 
               onPress={() => openLink('https://www.youtube.com/@MixiGaming3con')}>
-              <Text style={styles.socialIcon}>▶</Text>
+              <Image 
+                source={require('../../assets/anh/youtube.png')} 
+                style={styles.socialIconImage} 
+              />
               <Text style={styles.socialText}>YouTube</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.socialBtn, {backgroundColor: '#1877F2'}]} 
+            <TouchableOpacity style={[styles.socialBtn, {backgroundColor: '#0052be'}]} 
               onPress={() => openLink('https://web.facebook.com/MixiGaming')}>
-              <Text style={styles.socialIcon}>f</Text>
+              <Image 
+                source={require('../../assets/anh/facebook.png')} 
+                style={styles.socialIconImage} 
+              />
               <Text style={styles.socialText}>Facebook</Text>
             </TouchableOpacity>
           </View>
         </View>
+        
+        <View style={styles.bigLogo}>
+         <Image 
+           source={require('../../assets/anh/realdeal.png')} 
+           style={styles.bigLogo} 
+         />
 
-        {/* Phần dưới */}
-        <View style={styles.bottom}>
+</View>
+        <View style={styles.bottom}>         
           <Text style={styles.copyright}>© 2026 MIXIGAMING Shop. All rights reserved.</Text>
           
           <View style={styles.legal}>
@@ -90,7 +107,19 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     gap: 12,
   },
-  socialIcon: { fontSize: 22, color: '#fff', fontWeight: 'bold' },
+  bigLogo: {
+    width: 200,
+    height:100,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+
+  socialIconImage: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
   socialText: { color: '#fff', fontSize: 15, fontWeight: '500' },
   bottom: { borderTopWidth: 1, borderTopColor: '#222', paddingTop: 20, alignItems: 'center' },
   copyright: { color: '#666', fontSize: 13, textAlign: 'center' },

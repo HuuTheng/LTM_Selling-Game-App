@@ -26,6 +26,9 @@ const Login = ({ navigation }) => {
           borderRadius: 12,
         });
         setIsLoggedIn(true);
+        setTimeout(() => {
+        navigation.replace('MainStack'); 
+        }, 1000); // Đợi 1 giây để hiện FlashMessage rồi mới chuyển
       } else {
         showMessage({
           message: "Thất bại",

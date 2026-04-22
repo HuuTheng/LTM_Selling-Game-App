@@ -6,14 +6,15 @@ import { Text, View, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import IconManager, { APP_ICONS } from "../constants/icons";
-import Footer from "./footer";           // Import Footer
+import Footer from "./footer";
 
 // Import các màn hình thật
 import HomeScreen from "../screens/Home";
 import SearchScreen from "../screens/Search";
 import LibraryScreen from "../screens/Library";
 import NewsScreen from "../screens/News";
-import MenuScreen from "../screens/Menu";        // ← Đây là file Menu.js thật
+import MenuScreen from "../screens/Menu";
+import GameDetail from "../screens/GameDetail";
 import LoginScreen from "../screens/Login"; 
 import RegisterScreen from "../screens/Register";
 
@@ -62,7 +63,7 @@ const MainTabs = () => {
               <IconManager 
                 name={iconConfig.name} 
                 type={iconConfig.type} 
-                size={focused ? 38 : 34} 
+                size={focused ? 28 : 20} 
                 color={focused ? "#00f5ff" : "#888"} 
               />
             </View>
@@ -112,19 +113,33 @@ const MainTabs = () => {
 };
 
 const NavigationBar = () => {
-  const { isLoggedIn } = useAuth(); // Lấy trạng thái đăng nhập từ Context
+  const { isLoggedIn } = useAuth(); // Lấy trạng thái từ Context
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!isLoggedIn ? (
-        // Nếu chưa đăng nhập, chỉ cho phép vào cụm Auth
+        // Cụm màn hình khi CHƯA đăng nhập
         <>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
         </>
       ) : (
-        // Nếu đã đăng nhập, cho phép vào các tab chính
-        <Stack.Screen name="Main" component={MainTabs} />
+        // Cụm màn hình khi ĐÃ đăng nhập
+        <>
+          <Stack.Screen name="Main" component={MainTabs} />
+          
+          {/* Giữ nguyên phần GameDetail của bạn mình */}
+          <Stack.Screen 
+            name="GameDetail" 
+            component={GameDetail} 
+            options={{ 
+              headerShown: true,
+              headerTitle: "Chi tiết game",
+              headerStyle: { backgroundColor: '#1f1f1f' },
+              headerTintColor: '#00f5ff'
+            }} 
+          />
+        </>
       )}
     </Stack.Navigator>
   );
