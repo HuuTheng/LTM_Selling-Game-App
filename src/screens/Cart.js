@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
   View, Text, StyleSheet, FlatList, Image, 
-  TouchableOpacity, SafeAreaView, StatusBar 
+  TouchableOpacity, SafeAreaView, StatusBar, Alert 
 } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,12 +12,9 @@ import gamesData from "../data/games.json";
 
 const Cart = ({ navigation }) => {
   const { isDarkMode } = useAuth();
-  
-  // Giả sử lấy danh sách game chưa sở hữu để cho vào giỏ hàng
-  const [cartItems, setCartItems] = useState(
-    gamesData.games.slice(0, 5).map(game => ({ ...game, selected: false }))
-  );
+  const [cartItems, setCartItems] = useState([]);
 
+  // --- CẤU HÌNH THEME ---
   const theme = {
     bg: isDarkMode ? '#121212' : '#f5f5f5',
     card: isDarkMode ? '#1e1e1e' : '#ffffff',
@@ -26,17 +24,78 @@ const Cart = ({ navigation }) => {
     bottomBar: isDarkMode ? '#1a1a1a' : '#ffffff',
   };
 
-  // Hàm xử lý tích chọn từng game
+  // 1. Tự động cập nhật danh sách mỗi khi người dùng quay lại màn hình Giỏ hàng
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadCartData();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  const loadCartData = async () => {
+    try {
+      const savedCart = await AsyncStorage.getItem('cart');
+      const cartIds = savedCart ? JSON.parse(savedCart) : [];
+      
+      // Lọc dữ liệu từ file games.json dựa trên những ID có trong AsyncStorage
+      const items = gamesData.games
+        .filter(game => cartIds.includes(game.id))
+        .map(game => ({ ...game, selected: false }));
+      
+      setCartItems(items);
+    } catch (error) {
+      console.error("Lỗi khi tải dữ liệu giỏ hàng:", error);
+    }
+  };
+
+  // 2. Hàm xóa game khỏi giỏ hàng
+  const removeFromCart = async (id) => {
+    Alert.alert(
+      "Xác nhận xóa",
+      "Bạn muốn bỏ game này khỏi giỏ hàng?",
+      [
+        { text: "Hủy", style: "cancel" },
+        { 
+          text: "Xóa", 
+          style: "destructive",
+          onPress: async () => {
+            const updatedItems = cartItems.filter(item => item.id !== id);
+            setCartItems(updatedItems);
+            
+            // Cập nhật lại AsyncStorage
+            const updatedIds = updatedItems.map(item => item.id);
+            await AsyncStorage.setItem('cart', JSON.stringify(updatedIds));
+          }
+        }
+      ]
+    );
+  };
+
+  // 3. Hàm chọn/bỏ chọn từng game
   const toggleSelect = (id) => {
     setCartItems(prev => prev.map(item => 
       item.id === id ? { ...item, selected: !item.selected } : item
     ));
   };
 
-  // Tính tổng tiền các game được tích
+  // 4. Tính tổng tiền cho những game ĐƯỢC CHỌN
   const totalPrice = cartItems
     .filter(item => item.selected)
     .reduce((sum, item) => sum + item.price, 0);
+
+  // 5. Chuyển sang trang Thanh toán
+  const handleCheckout = () => {
+    const selectedGames = cartItems.filter(item => item.selected);
+    if (selectedGames.length === 0) {
+      Alert.alert("Thông báo", "Vui lòng chọn ít nhất một game để thanh toán.");
+      return;
+    }
+    // Truyền danh sách game đã chọn sang màn hình Payment
+    navigation.navigate('Payment', { 
+      gamesToBuy: selectedGames, 
+      fromCart: true 
+    });
+  };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity 
@@ -61,8 +120,8 @@ const Cart = ({ navigation }) => {
         </Text>
       </View>
 
-      <TouchableOpacity onPress={() => {/* Logic xóa khỏi giỏ */}}>
-        <Ionicons name="trash-outline" size={20} color="#ff4d4d" />
+      <TouchableOpacity onPress={() => removeFromCart(item.id)} style={styles.deleteBtn}>
+        <Ionicons name="trash-outline" size={22} color="#ff4d4d" />
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -79,25 +138,28 @@ const Cart = ({ navigation }) => {
         data={cartItems}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: 150 }}
         ListEmptyComponent={
-          <Text style={[styles.emptyText, { color: theme.textSub }]}>Giỏ hàng trống</Text>
+          <View style={styles.emptyContainer}>
+            <Ionicons name="cart-outline" size={80} color={theme.textSub} />
+            <Text style={[styles.emptyText, { color: theme.textSub }]}>Giỏ hàng của bạn đang trống</Text>
+          </View>
         }
       />
 
-      {/* THANH TỔNG TIỀN & THANH TOÁN (Sát Bottom Nav) */}
+      {/* THANH TỔNG TIỀN & THANH TOÁN (Cố định ở dưới màn hình) */}
       <View style={[styles.bottomBar, { backgroundColor: theme.bottomBar, borderTopColor: theme.border }]}>
         <View style={styles.bottomContent}>
-          {/* Góc Trái: Nút Thanh toán */}
           <TouchableOpacity 
             style={[styles.checkoutBtn, { opacity: totalPrice > 0 ? 1 : 0.6 }]}
             disabled={totalPrice === 0}
-            onPress={() => alert("Chuyển đến trang thanh toán")}
+            onPress={handleCheckout}
           >
-            <Text style={styles.checkoutText}>THANH TOÁN</Text>
+            <Text style={styles.checkoutText}>
+              THANH TOÁN ({cartItems.filter(i => i.selected).length})
+            </Text>
           </TouchableOpacity>
 
-          {/* Góc Phải: Tổng số tiền */}
           <View style={styles.totalContainer}>
             <Text style={[styles.totalLabel, { color: theme.textSub }]}>Tổng cộng:</Text>
             <Text style={styles.totalAmount}>{totalPrice.toLocaleString('vi-VN')} đ</Text>
@@ -122,13 +184,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   checkbox: { marginRight: 15, borderRadius: 4 },
-  gameImage: { width: 50, height: 70, borderRadius: 6 },
+  gameImage: { width: 55, height: 75, borderRadius: 6 },
   infoContainer: { flex: 1, marginLeft: 15 },
   gameTitle: { fontSize: 16, fontWeight: 'bold' },
   gamePrice: { fontSize: 14, marginTop: 4, fontWeight: '600' },
-  emptyText: { textAlign: 'center', marginTop: 50, fontSize: 16 },
-
-  // Thanh Bottom Bar
+  deleteBtn: { padding: 5 },
+  emptyContainer: { alignItems: 'center', marginTop: 100 },
+  emptyText: { marginTop: 20, fontSize: 16 },
   bottomBar: { 
     position: 'absolute', 
     bottom: 0, 
@@ -136,7 +198,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20, 
     paddingVertical: 20, 
     borderTopWidth: 1,
-    paddingBottom: 35, // Để không bị đè bởi vạch home của iPhone
+    paddingBottom: 35,
   },
   bottomContent: { 
     flexDirection: 'row', 
@@ -145,14 +207,14 @@ const styles = StyleSheet.create({
   },
   checkoutBtn: { 
     backgroundColor: '#00f5ff', 
-    paddingHorizontal: 25, 
+    paddingHorizontal: 20, 
     paddingVertical: 12, 
     borderRadius: 10 
   },
-  checkoutText: { color: '#000', fontWeight: 'bold', fontSize: 15 },
+  checkoutText: { color: '#000', fontWeight: 'bold', fontSize: 14 },
   totalContainer: { alignItems: 'flex-end' },
   totalLabel: { fontSize: 12, marginBottom: 2 },
-  totalAmount: { color: '#00f5ff', fontSize: 20, fontWeight: 'bold' },
+  totalAmount: { color: '#00f5ff', fontSize: 18, fontWeight: 'bold' },
 });
 
 export default Cart;

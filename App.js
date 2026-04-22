@@ -11,6 +11,7 @@ import Register from './src/screens/Register';
 import Rnews from "./src/screens/Rnews";
 import GameDetail from './src/screens/GameDetail'; 
 import Payment from './src/screens/Payment';
+import Library from './src/screens/Library';
 
 import NavigationBar, { AuthProvider } from "./src/nav_bar/navigation_bar";
 
@@ -48,6 +49,7 @@ export default function App() {
             <Stack.Screen name="Rnews" component={Rnews} />
             <Stack.Screen name="GameDetail" component={GameDetail} />
             <Stack.Screen name="Payment" component={Payment} />
+            <Stack.Screen name="Library" component={Library} />
 
             {/* Khi đăng nhập xong mới nhảy vào đây để có TabBar */}
             <Stack.Screen name="MainStack" component={NavigationBar} />
