@@ -131,7 +131,6 @@ export default function GameDetail({ route }) {
           </View>
         </View>
 
-        {/* Info Section */}
         {/* Info Section - Đã tích hợp logic Đã có sẵn */}
         <View style={styles.infoSection}>
           <Text style={styles.gameName}>{game.title}</Text>

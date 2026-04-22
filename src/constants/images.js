@@ -21,9 +21,7 @@ export const GAME_IMAGES = {
   "../../assets/anh/gt7.png": require("../../assets/anh/gt7.png"),
   "../../assets/anh/sekiro.png": require("../../assets/anh/sekiro.png"),
   "../../assets/anh/hades.png": require("../../assets/anh/hades.png"),
-<<<<<<< HEAD
   "../../assets/anh/Mixigaming-Logo.jpg": require("../../assets/anh/Mixigaming-Logo.jpg"),
-=======
 };
 export const NEWS_IMAGES = {
   "../assets/images/news/p01.jpg": require("../../assets/anh/news/p01.jpg"),
@@ -84,5 +82,4 @@ export const NEWS_IMAGES = {
   "../assets/images/news/p20_2.jpg": require("../../assets/anh/news/p20_2.jpg"),
   "../assets/images/news/re9_thumb.jpg": require("../../assets/anh/news/re9_thumb.jpg"),
   "../assets/images/news/re9_concept.jpg": require("../../assets/anh/news/re9_concept.jpg"),
->>>>>>> ab64e3a4d1d242ab226fc064042fc0cc8a76a316
 };
