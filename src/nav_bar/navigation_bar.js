@@ -2,11 +2,11 @@
 import React, { createContext, useContext, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native"; // Thêm Image
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import IconManager, { APP_ICONS } from "../constants/icons";
-import Footer from "./footer";
+// import Footer from "./footer"; // Không dùng đến trong file này
 
 // Import các màn hình thật
 import HomeScreen from "../screens/Home";
@@ -15,6 +15,7 @@ import LibraryScreen from "../screens/Library";
 import NewsScreen from "../screens/News";
 import MenuScreen from "../screens/Menu";
 import GameDetail from "../screens/GameDetail";
+import Rnews from "../screens/Rnews"; // Đảm bảo bạn đã import màn hình tin tức chi tiết
 
 // Auth Context
 const AuthContext = createContext();
@@ -33,6 +34,14 @@ export const useAuth = () => useContext(AuthContext);
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+// --- Component Logo cho Header ---
+const HeaderLogo = () => (
+  <Image
+    source={require("../../assets/anh/realdeal.png")}
+    style={{ width: 120, height: 40, resizeMode: "contain" }}
+  />
+);
+
 const MainTabs = () => {
   const insets = useSafeAreaInsets();
 
@@ -42,15 +51,13 @@ const MainTabs = () => {
       screenOptions={({ route }) => ({
         headerShown: true,
         headerTitleAlign: "center",
+        // THAY ĐỔI TẠI ĐÂY: Dùng component HeaderLogo thay vì Text
+        headerTitle: (props) => <HeaderLogo {...props} />, 
         headerStyle: {
           backgroundColor: "#1f1f1f",
           borderBottomWidth: 1,
           borderBottomColor: "#333",
-        },
-        headerTitleStyle: {
-          color: "#00f5ff",
-          fontSize: 18,
-          fontWeight: "bold",
+          height: 60 + insets.top, // Tăng nhẹ chiều cao header cho đẹp
         },
 
         tabBarIcon: ({ focused }) => {
@@ -72,7 +79,7 @@ const MainTabs = () => {
         tabBarInactiveTintColor: "#888",
 
         tabBarStyle: {
-          height: 82 + insets.bottom,
+          height: 70 + insets.bottom, // Chỉnh lại height cho cân đối
           paddingBottom: insets.bottom + 8,
           paddingTop: 12,
           backgroundColor: "#1f1f1f",
@@ -92,8 +99,9 @@ const MainTabs = () => {
           return (
             <Text style={{ 
               color: focused ? "#00f5ff" : "#888", 
-              fontSize: 11.5,
+              fontSize: 11,
               fontWeight: focused ? "700" : "500",
+              marginTop: 4
             }}>
               {label}
             </Text>
@@ -126,6 +134,13 @@ const NavigationBar = () => {
             headerTintColor: '#00f5ff'
           }} 
         />
+
+        {/* THÊM MÀN HÌNH CHI TIẾT TIN TỨC NẾU CHƯA CÓ */}
+        <Stack.Screen 
+          name="Rnews" 
+          component={Rnews} 
+          options={{ headerShown: false }} 
+        />
       </Stack.Navigator>
     </AuthProvider>
   );
@@ -136,10 +151,10 @@ export default NavigationBar;
 const styles = StyleSheet.create({
   activeIndicator: {
     position: "absolute",
-    top: -10,
-    width: 48,
-    height: 4,
+    top: -12,
+    width: 40,
+    height: 3,
     backgroundColor: "#00f5ff",
     borderRadius: 10,
-  },
+  }
 });
