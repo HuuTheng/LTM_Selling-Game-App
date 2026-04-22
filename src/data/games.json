@@ -1,0 +1,207 @@
+{
+  "games": [
+    {
+      "id": 1,
+      "title": "Elden Ring",
+      "categories": ["Hành động", "Nhập vai"],
+      "studio": "FromSoftware",
+      "price": 1250000,
+      "image": "../../assets/anh/elden_ring.png",
+      "youtube_id": "AKXiKBnzpBQ",
+      "description": "Một trò chơi nhập vai hành động kỳ ảo trong một thế giới rộng lớn đầy rẫy hiểm nguy.",
+      "isOwned": true
+    },
+    {
+      "id": 2,
+      "title": "The Witcher 3: Wild Hunt",
+      "categories": ["Nhập vai", "Phiêu lưu"],
+      "studio": "CD Projekt Red",
+      "price": 850000,
+      "image": "../../assets/anh/witcher3.png",
+      "youtube_id": "XHrskkHf958",
+      "description": "Hóa thân thành thợ săn quái vật Geralt đi tìm đứa con của định mệnh."
+    },
+    {
+      "id": 3,
+      "title": "Resident Evil Village",
+      "categories": ["Kinh dị", "Hành động"],
+      "studio": "Capcom",
+      "price": 990000,
+      "image": "../../assets/anh/re_village.png",
+      "youtube_id": "dZ_m9pL_jWk",
+      "description": "Trải nghiệm nỗi kinh hoàng trong ngôi làng đầy rẫy những sinh vật đột biến."
+    },
+    {
+      "id": 4,
+      "title": "FIFA 23",
+      "categories": ["Thể thao", "Chiến thuật"],
+      "studio": "EA Sports",
+      "price": 1450000,
+      "image": "../../assets/anh/fifa23.png",
+      "youtube_id": "0tIW1X2dB0o",
+      "description": "Đỉnh cao của bóng đá thế giới với công nghệ HyperMotion 2."
+    },
+    {
+      "id": 5,
+      "title": "God of War Ragnarök",
+      "categories": ["Hành động", "Phiêu lưu"],
+      "studio": "Santa Monica Studio",
+      "price": 1650000,
+      "image": "../../assets/anh/gow_ragnarok.png",
+      "youtube_id": "hfJ4Km46A-0",
+      "description": "Kratos và Atreus phải hành trình qua chín cõi để tìm kiếm câu trả lời."
+    },
+    {
+      "id": 6,
+      "title": "Civilization VI",
+      "categories": ["Chiến thuật", "Nhập vai"],
+      "studio": "Firaxis Games",
+      "price": 550000,
+      "image": "../../assets/anh/civ6.png",
+      "youtube_id": "5KdEakfLxpM",
+      "description": "Xây dựng một đế chế bền vững theo thời gian."
+    },
+    {
+      "id": 7,
+      "title": "Dead Space Remake",
+      "categories": ["Kinh dị", "Hành động"],
+      "studio": "Motive Studio",
+      "price": 1100000,
+      "image": "../../assets/anh/dead_space.png",
+      "youtube_id": "cTDJNZ9cZ1w",
+      "description": "Kỹ sư Isaac Clarke cố gắng sống sót trên một con tàu vũ trụ."
+    },
+    {
+      "id": 8,
+      "title": "Hollow Knight",
+      "categories": ["Phiêu lưu", "Hành động"],
+      "studio": "Team Cherry",
+      "price": 250000,
+      "image": "../../assets/anh/hollow_knight.png",
+      "youtube_id": "UAO2urG23S4",
+      "description": "Khám phá vương quốc côn trùng cổ xưa bị lãng quên.",
+      "isOwned": true
+    },
+    {
+      "id": 9,
+      "title": "Cyberpunk 2077",
+      "categories": ["Nhập vai", "Hành động"],
+      "studio": "CD Projekt Red",
+      "price": 950000,
+      "image": "../../assets/anh/cyberpunk.png",
+      "youtube_id": "qIcTM8WXFjk",
+      "description": "Một câu chuyện thế giới mở lấy bối cảnh tại Night City."
+    },
+    {
+      "id": 10,
+      "title": "Age of Empires IV",
+      "categories": ["Chiến thuật", "Hành động"],
+      "studio": "Relic Entertainment",
+      "price": 750000,
+      "image": "../../assets/anh/aoe4.png",
+      "youtube_id": "Q3rDospXpIs",
+      "description": "Tái hiện những trận chiến lịch sử vĩ đại."
+    },
+    {
+      "id": 11,
+      "title": "Outlast 2",
+      "categories": ["Kinh dị", "Phiêu lưu"],
+      "studio": "Red Barrels",
+      "price": 350000,
+      "image": "../../assets/anh/outlast2.png",
+      "youtube_id": "MK5lMcSOfS8",
+      "description": "Chạy trốn khỏi những kẻ cuồng tín trong một vùng hẻo lánh."
+    },
+    {
+      "id": 12,
+      "title": "NBA 2K23",
+      "categories": ["Thể thao", "Chiến thuật"],
+      "studio": "Visual Concepts",
+      "price": 1350000,
+      "image": "../../assets/anh/nba2k23.png",
+      "youtube_id": "Rb0VatXnZ6Y",
+      "description": "Trải nghiệm bóng rổ nhà nghề Mỹ chân thực."
+    },
+    {
+      "id": 13,
+      "title": "Genshin Impact",
+      "categories": ["Nhập vai", "Phiêu lưu"],
+      "studio": "HoYoverse",
+      "price": 0,
+      "image": "../../assets/anh/genshin.png",
+      "youtube_id": "TAlKhARUcoY",
+      "description": "Khám phá thế giới Teyvat rộng lớn.",
+      "isOwned": true
+    },
+    {
+      "id": 14,
+      "title": "Stardew Valley",
+      "categories": ["Nhập vai", "Chiến thuật"],
+      "studio": "ConcernedApe",
+      "price": 180000,
+      "image": "../../assets/anh/stardew.png",
+      "youtube_id": "ot7uXNQskhs",
+      "description": "Xây dựng trang trại mơ ước và kết bạn với cư dân."
+    },
+    {
+      "id": 15,
+      "title": "Ghost of Tsushima",
+      "categories": ["Hành động", "Phiêu lưu"],
+      "studio": "Sucker Punch",
+      "price": 1550000,
+      "image": "../../assets/anh/ghost_tsushima.png",
+      "youtube_id": "mXfM1M_7SVs",
+      "description": "Hóa thân thành samurai bảo vệ đảo Tsushima."
+    },
+    {
+      "id": 16,
+      "title": "Total War: Warhammer III",
+      "categories": ["Chiến thuật", "Phiêu lưu"],
+      "studio": "Creative Assembly",
+      "price": 1200000,
+      "image": "../../assets/anh/warhammer3.png",
+      "youtube_id": "HAr7yUlM0Po",
+      "description": "Chỉ huy quân đội trong thế giới kỳ ảo quy mô lớn."
+    },
+    {
+      "id": 17,
+      "title": "Silent Hill 2 Remake",
+      "categories": ["Kinh dị", "Nhập vai"],
+      "studio": "Bloober Team",
+      "price": 1490000,
+      "image": "../../assets/anh/sh2.png",
+      "youtube_id": "PyXpZ_uS63s",
+      "description": "Hành trình tìm lại người vợ đã mất trong thị trấn mù sương."
+    },
+    {
+      "id": 18,
+      "title": "Gran Turismo 7",
+      "categories": ["Thể thao", "Phiêu lưu"],
+      "studio": "Polyphony Digital",
+      "price": 1650000,
+      "image": "../../assets/anh/gt7.png",
+      "youtube_id": "1tB80XnToZg",
+      "description": "Trình mô phỏng lái xe chân thực nhất."
+    },
+    {
+      "id": 19,
+      "title": "Sekiro: Shadows Die Twice",
+      "categories": ["Hành động", "Nhập vai"],
+      "studio": "FromSoftware",
+      "price": 1150000,
+      "image": "../../assets/anh/sekiro.png",
+      "youtube_id": "rXMX4YJ7Lks",
+      "description": "Trở thành một shinobi trên con đường trả thù."
+    },
+    {
+      "id": 20,
+      "title": "Hades",
+      "categories": ["Hành động", "Nhập vai"],
+      "studio": "Supergiant Games",
+      "price": 380000,
+      "image": "../../assets/anh/hades.png",
+      "youtube_id": "91t0fO_9mNc",
+      "description": "Chống lại vị thần của địa ngục để thoát ra ngoài."
+    }
+  ]
+}
