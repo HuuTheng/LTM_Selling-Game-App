@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "LTM_Selling-Game-App",
+    "slug": "LTM_Selling-Game-App",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/anh/Mixigaming-Logo.jpg",
+    "scheme": "ltmsellinggameapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/anh/logo.png",
+        "backgroundImage": "./assets/anh/logo.png",
+        "monochromeImage": "./assets/anh/logo.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/anh/logo.png"
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false,
+      "reactCompiler": true
+    }
+  }
+}
