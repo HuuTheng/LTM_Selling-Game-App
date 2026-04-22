@@ -1,39 +1,55 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  Image, 
-  TouchableOpacity, 
-  Dimensions, 
-  StatusBar, 
-  FlatList 
+  View, Text, StyleSheet, ScrollView, Image, 
+  TouchableOpacity, Dimensions, StatusBar, FlatList, Alert 
 } from 'react-native';
 import YoutubePlayer from "react-native-youtube-iframe";
+import { useIsFocused } from '@react-navigation/native'; // Thêm để theo dõi khi màn hình hiển thị
 import { GAME_IMAGES } from '../constants/images';
-import { useAuth } from '../nav_bar/navigation_bar'; // Import useAuth
+import { useAuth } from '../nav_bar/navigation_bar'; 
 
 const { width } = Dimensions.get('window');
 
-const formatPrice = (price) => {
+// Logic format giá tiền
+const formatPrice = (price, isAlreadyOwned) => {
+  if (isAlreadyOwned) return "Đã sở hữu";
   if (price === 0) return "Miễn phí";
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
 };
 
-export default function GameDetail({ route }) {
+export default function GameDetail({ route, navigation }) {
   const { game } = route.params;
-  const { isDarkMode } = useAuth(); // Lấy trạng thái theme
+  const { isDarkMode } = useAuth(); 
+  const isFocused = useIsFocused(); // Hook kiểm tra màn hình đang hiển thị
   
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isAlreadyOwned, setIsAlreadyOwned] = useState(false); // State quản lý sở hữu thực tế
   const flatListRef = useRef(null);
+
+  // Kiểm tra quyền sở hữu mỗi khi màn hình được Focus
+  useEffect(() => {
+    if (isFocused) {
+      checkOwnership();
+    }
+  }, [isFocused]);
+
+  const checkOwnership = async () => {
+    try {
+      const savedLib = await AsyncStorage.getItem('library');
+      const libIds = savedLib ? JSON.parse(savedLib) : [];
+      // Kiểm tra xem ID game có trong mảng library của AsyncStorage không
+      setIsAlreadyOwned(libIds.includes(game.id));
+    } catch (error) {
+      console.error("Lỗi kiểm tra thư viện:", error);
+    }
+  };
 
   const mediaData = [
     ...(game.youtube_id ? [{ id: 'trailer', type: 'video', youtube_id: game.youtube_id }] : []),
     { id: 'main_img', type: 'image', uri: game.image }
   ];
 
-  // Màu sắc động theo Theme
   const theme = {
     bg: isDarkMode ? '#121212' : '#f5f5f5',
     card: isDarkMode ? '#1a1a1a' : '#ffffff',
@@ -42,6 +58,30 @@ export default function GameDetail({ route }) {
     textDesc: isDarkMode ? '#ccc' : '#444',
     badgeBg: isDarkMode ? '#333' : '#e0e0e0',
     border: isDarkMode ? '#444' : '#ddd',
+  };
+
+  const addToCart = async () => {
+    try {
+      const savedCart = await AsyncStorage.getItem('cart');
+      let cartIds = savedCart ? JSON.parse(savedCart) : [];
+      
+      if (!cartIds.includes(game.id)) {
+        cartIds.push(game.id);
+        await AsyncStorage.setItem('cart', JSON.stringify(cartIds));
+        Alert.alert("Thành công", "Đã thêm game vào giỏ hàng!");
+      } else {
+        Alert.alert("Thông báo", "Game này đã có trong giỏ hàng rồi.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi thêm vào giỏ:", error);
+    }
+  };
+
+  const handleBuyNow = () => {
+    navigation.navigate('Payment', { 
+      gamesToBuy: [game], 
+      fromCart: false 
+    });
   };
 
   const onScroll = (event) => {
@@ -92,7 +132,6 @@ export default function GameDetail({ route }) {
       <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         
-        {/* Media Section */}
         <View style={styles.mediaContainer}>
           <FlatList
             ref={flatListRef}
@@ -117,32 +156,45 @@ export default function GameDetail({ route }) {
           </View>
         </View>
 
-        {/* Info Section */}
         <View style={styles.infoSection}>
           <Text style={[styles.gameName, { color: theme.textMain }]}>{game.title}</Text>
           <Text style={[styles.studioText, { color: theme.textSub }]}>{game.studio}</Text>
-          <Text style={styles.priceText}>{formatPrice(game.price)}</Text>
           
-          <TouchableOpacity style={styles.buyNowBtn}>
-            <Text style={styles.buyNowText}>MUA NGAY</Text>
+          <Text style={[styles.priceText, isAlreadyOwned && { color: theme.textSub }]}>
+            {formatPrice(game.price, isAlreadyOwned)}
+          </Text>
+
+          {/* NÚT MUA NGAY / ĐÃ SỞ HỮU */}
+          <TouchableOpacity 
+            style={[
+              styles.buyNowBtn, 
+              isAlreadyOwned && { backgroundColor: isDarkMode ? '#333' : '#ccc' } 
+            ]}
+            disabled={isAlreadyOwned}
+            onPress={handleBuyNow}
+          >
+            <Text style={[styles.buyNowText, isAlreadyOwned && { color: '#888' }]}>
+              {isAlreadyOwned ? "ĐÃ CÓ SẴN" : "MUA NGAY"}
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.addToCartBtn}>
-            <Text style={styles.addToCartText}>THÊM VÀO GIỎ HÀNG</Text>
-          </TouchableOpacity>
+          {/* NÚT THÊM VÀO GIỎ HÀNG (Chỉ hiện nếu chưa sở hữu) */}
+          {!isAlreadyOwned && (
+            <TouchableOpacity style={styles.addToCartBtn} onPress={addToCart}>
+              <Text style={styles.addToCartText}>THÊM VÀO GIỎ HÀNG</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
-        {/* Description */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textMain }]}>GIỚI THIỆU TRÒ CHƠI</Text>
           <Text style={[styles.descriptionText, { color: theme.textDesc }]}>{game.description}</Text>
         </View>
 
-        {/* Categories */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textMain }]}>THỂ LOẠI</Text>
           <View style={styles.categoryContainer}>
-            {game.categories.map((cat, index) => (
+            {game.categories?.map((cat, index) => (
               <View key={index} style={[styles.categoryBadge, { backgroundColor: theme.badgeBg }]}>
                 <Text style={styles.categoryText}>{cat}</Text>
               </View>
