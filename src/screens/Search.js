@@ -1,6 +1,9 @@
 import React, { useState, memo } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from "react-native";
 import gamesData from "../data/games.json";
+import { LinearGradient } from 'expo-linear-gradient'; 
+import { ImageBackground } from 'react-native';
+import { GAME_IMAGES } from '../constants/images';
 
 const formatPrice = (price) => {
   if (price === 0) return "Miễn phí";
@@ -96,11 +99,29 @@ export default function Search({ navigation }) {
           style={styles.gameItem}
           onPress={() => navigation.navigate('GameDetail', { game: item })} // Gọi điều hướng và gửi dữ liệu game
         >
-          <View>
-            <Text style={styles.gameTitle}>{item.title}</Text>
-            <Text style={{ color: '#888', fontSize: 12 }}>{item.studio}</Text>
-          </View>
-          <Text style={styles.gamePrice}>{formatPrice(item.price)}</Text>
+          <ImageBackground 
+            source={GAME_IMAGES[item.image]} 
+            style={styles.itemImageBackground}
+            resizeMode="cover"
+            imageStyle={{ opacity: 0.5 }} // Độ mờ tổng thể (để dễ đọc text)
+          >
+            {/* 2. Lớp gradient mờ dần từ trái (đen) sang phải (trong suốt) */}
+            <LinearGradient
+              colors={['rgba(31, 31, 31, 1)', 'rgba(31, 31, 31, 0.4)', 'transparent']} 
+              start={{ x: 0, y: 0.5 }} // Bắt đầu từ mép trái giữa
+              end={{ x: 1, y: 0.5 }}   // Kết thúc ở mép phải giữa
+              style={styles.gradientOverlay}
+            >
+              {/* 3. Nội dung text (nằm trên lớp mờ) */}
+              <View style={styles.textContainer}>
+                <View>
+                  <Text style={styles.gameTitle}>{item.title}</Text>
+                  <Text style={styles.studioText}>{item.studio}</Text>
+                </View>
+                <Text style={styles.gamePrice}>{formatPrice(item.price)}</Text>
+              </View>
+            </LinearGradient>
+          </ImageBackground>
         </TouchableOpacity>
       )}
       />
@@ -118,7 +139,24 @@ const styles = StyleSheet.create({
   chipText: { color: "#fff" },
   chipTextActive: { color: "#000", fontWeight: "bold" },
   resultTitle: { color: "#00f5ff", fontWeight: "bold", marginBottom: 15, fontSize: 14 },
-  gameItem: { backgroundColor: "#1f1f1f", padding: 15, borderRadius: 10, marginBottom: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  gameItem: { padding: 7, borderRadius: 10, marginBottom: 5, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', overflow: 'hidden' },
   gameTitle: { color: "#fff", fontSize: 16, fontWeight: '500' },
-  gamePrice: { color: "#00f5ff", fontWeight: 'bold' }
+  gamePrice: { color: "#fff", fontWeight: 'bold' },
+  itemImageBackground: {
+    width: '100%',
+    height: 105, // Đặt chiều cao cố định cho ô game
+  },
+  gradientOverlay: {
+    flex: 1,
+    paddingHorizontal: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  studioText: { color: '#bbb', fontSize: 12 }
 });
