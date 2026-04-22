@@ -14,6 +14,7 @@ import SearchScreen from "../screens/Search";
 import LibraryScreen from "../screens/Library";
 import NewsScreen from "../screens/News";
 import MenuScreen from "../screens/Menu";        // ← Đây là file Menu.js thật
+import GameDetail from "../screens/GameDetail";
 
 // Auth Context
 const AuthContext = createContext();
@@ -114,6 +115,17 @@ const NavigationBar = () => {
     <AuthProvider>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Main" component={MainTabs} />
+
+        <Stack.Screen 
+          name="GameDetail" 
+          component={GameDetail} 
+          options={{ 
+            headerShown: true, // Hiện tiêu đề và nút quay lại
+            headerTitle: "Chi tiết game",
+            headerStyle: { backgroundColor: '#1f1f1f' },
+            headerTintColor: '#00f5ff'
+          }} 
+        />
       </Stack.Navigator>
     </AuthProvider>
   );
