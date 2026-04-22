@@ -1,3 +1,4 @@
+// src/nav_bar/navigation_bar.js
 import React, { createContext, useContext, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -16,14 +17,17 @@ import GameDetail from "../screens/GameDetail";
 import LoginScreen from "../screens/Login"; 
 import RegisterScreen from "../screens/Register";
 import Rnews from "../screens/Rnews";
+import Cart from '../screens/Cart'; // Đã import trang Cart
 
-// Auth Context
+// --- 1. AUTH & THEME CONTEXT ---
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true); 
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, isDarkMode, setIsDarkMode }}>
       {children}
     </AuthContext.Provider>
   );
@@ -34,7 +38,7 @@ export const useAuth = () => useContext(AuthContext);
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// --- Component Logo cho Header ---
+// --- 2. LOGO COMPONENT ---
 const HeaderLogo = () => (
   <Image
     source={require("../../assets/anh/realdeal.png")}
@@ -42,8 +46,17 @@ const HeaderLogo = () => (
   />
 );
 
+// --- 3. MAIN TAB NAVIGATOR ---
 const MainTabs = () => {
   const insets = useSafeAreaInsets();
+  const { isDarkMode } = useAuth();
+
+  const themeColors = {
+    bg: isDarkMode ? "#1f1f1f" : "#ffffff",
+    border: isDarkMode ? "#333" : "#e0e0e0",
+    textInactive: isDarkMode ? "#888" : "#999",
+    active: "#00f5ff",
+  };
 
   return (
     <Tab.Navigator
@@ -53,10 +66,12 @@ const MainTabs = () => {
         headerTitleAlign: "center",
         headerTitle: (props) => <HeaderLogo {...props} />, 
         headerStyle: {
-          backgroundColor: "#1f1f1f",
+          backgroundColor: themeColors.bg,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: themeColors.border,
           height: 60 + insets.top,
+          elevation: 0,
+          shadowOpacity: 0,
         },
 
         tabBarIcon: ({ focused }) => {
@@ -68,22 +83,23 @@ const MainTabs = () => {
                 name={iconConfig.name} 
                 type={iconConfig.type} 
                 size={focused ? 28 : 20} 
-                color={focused ? "#00f5ff" : "#888"} 
+                color={focused ? themeColors.active : themeColors.textInactive} 
               />
             </View>
           );
         },
 
-        tabBarActiveTintColor: "#00f5ff",
-        tabBarInactiveTintColor: "#888",
+        tabBarActiveTintColor: themeColors.active,
+        tabBarInactiveTintColor: themeColors.textInactive,
 
         tabBarStyle: {
           height: 70 + insets.bottom,
           paddingBottom: insets.bottom + 8,
           paddingTop: 12,
-          backgroundColor: "#1f1f1f",
+          backgroundColor: themeColors.bg,
           borderTopWidth: 1,
-          borderTopColor: "#333",
+          borderTopColor: themeColors.border,
+          elevation: 0,
         },
 
         tabBarLabel: ({ focused }) => {
@@ -97,7 +113,7 @@ const MainTabs = () => {
           }
           return (
             <Text style={{ 
-              color: focused ? "#00f5ff" : "#888", 
+              color: focused ? themeColors.active : themeColors.textInactive, 
               fontSize: 11,
               fontWeight: focused ? "700" : "500",
               marginTop: 4
@@ -153,6 +169,44 @@ const NavigationBar = () => {
           />
         </>
       )}
+      <Stack.Screen name="Main" component={MainTabs} />
+
+      {/* MÀN HÌNH GIỎ HÀNG (MỚI) */}
+      <Stack.Screen 
+        name="CART" 
+        component={Cart} 
+        options={{ 
+          headerShown: true,
+          headerTitle: "Giỏ hàng",
+          headerStyle: { 
+            backgroundColor: isDarkMode ? '#1f1f1f' : '#fff',
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 1,
+            borderBottomColor: isDarkMode ? '#333' : '#eee'
+          },
+          headerTintColor: '#00f5ff',
+          headerTitleStyle: { color: isDarkMode ? '#fff' : '#000', fontWeight: 'bold' }
+        }} 
+      />
+
+      <Stack.Screen 
+        name="GameDetail" 
+        component={GameDetail} 
+        options={{ 
+          headerShown: true,
+          headerTitle: "Chi tiết game",
+          headerStyle: { backgroundColor: isDarkMode ? '#1f1f1f' : '#fff' },
+          headerTintColor: '#00f5ff',
+          headerTitleStyle: { color: isDarkMode ? '#fff' : '#000' }
+        }} 
+      />
+
+      <Stack.Screen 
+        name="Rnews" 
+        component={Rnews} 
+        options={{ headerShown: false }} 
+      />
     </Stack.Navigator>
   );
 };
