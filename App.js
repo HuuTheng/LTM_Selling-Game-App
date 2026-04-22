@@ -4,15 +4,14 @@ import { NavigationContainer, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import FlashMessage from "react-native-flash-message"; 
 
-// --- PHẦN IMPORT CÁC MÀN HÌNH (Quan trọng nhất) ---
-import Home from './src/screens/Home';      // Đã thêm để sửa lỗi "Property Home doesn't exist"
-import Login from './src/screens/Login';    // Đảm bảo có file này
+// --- PHẦN IMPORT CÁC MÀN HÌNH ---
+import Home from './src/screens/Home';
+import Login from './src/screens/Login';
 import Register from './src/screens/Register'; 
 import Rnews from "./src/screens/Rnews";
 import GameDetail from './src/screens/GameDetail'; 
+import Payment from './src/screens/Payment';
 
-// Import NavigationBar và AuthProvider từ file nav_bar
-// Lưu ý: Chỉ import một lần duy nhất để tránh lỗi "already been declared"
 import NavigationBar, { AuthProvider } from "./src/nav_bar/navigation_bar";
 
 const Stack = createNativeStackNavigator();
@@ -48,7 +47,8 @@ export default function App() {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="Rnews" component={Rnews} />
             <Stack.Screen name="GameDetail" component={GameDetail} />
-            
+            <Stack.Screen name="Payment" component={Payment} />
+
             {/* Khi đăng nhập xong mới nhảy vào đây để có TabBar */}
             <Stack.Screen name="MainStack" component={NavigationBar} />
             

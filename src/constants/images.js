@@ -1,5 +1,3 @@
-// src/constants/images.js
-
 export const GAME_IMAGES = {
   "../../assets/anh/elden_ring.png": require("../../assets/anh/elden_ring.png"),
   "../../assets/anh/witcher3.png": require("../../assets/anh/witcher3.png"),

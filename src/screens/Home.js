@@ -42,7 +42,7 @@ const Home = ({ navigation }) => {
     navigation.replace('HomeGuest');
   };
 
-  // Hàm bổ trợ để hiển thị giá tiền thông minh
+  // Hàm hiển thị giá tiền
   const renderPrice = (price) => {
     if (price === 0) {
       return <Text style={[styles.priceText, { color: '#00f5ff' }]}>Miễn phí</Text>;

@@ -12,7 +12,6 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
-// Import mapping hình ảnh từ file constants
 import { NEWS_IMAGES } from "../constants/images"; 
 
 const { width } = Dimensions.get("window");
@@ -48,7 +47,7 @@ export default function Rnews({ route, navigation }) {
 
       <ScrollView showsVerticalScrollIndicator={false} bounces={true}>
         
-        {/* PHẦN ẢNH THUMBNAIL TÍCH HỢP GRADIENT */}
+        {/* PHẦN ẢNH THUMBNAIL */}
         <View style={[styles.thumbnailWrapper, { marginTop: insets.top + 70 }]}>
           <View style={styles.imageContainer}>
             <Image 
@@ -75,7 +74,7 @@ export default function Rnews({ route, navigation }) {
             <Text style={styles.authorName}>{article.author}</Text>
           </View>
 
-          {/* BOX TÓM TẮT (Sapo) */}
+          {/* BOX TÓM TẮT */}
           <View style={styles.summaryBox}>
             <Text style={styles.summaryText}>{article.summary}</Text>
           </View>

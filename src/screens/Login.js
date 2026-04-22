@@ -28,7 +28,7 @@ const Login = ({ navigation }) => {
         setIsLoggedIn(true);
         setTimeout(() => {
         navigation.replace('MainStack'); 
-        }, 1000); // Đợi 1 giây để hiện FlashMessage rồi mới chuyển
+        }, 1000);
       } else {
         showMessage({
           message: "Thất bại",

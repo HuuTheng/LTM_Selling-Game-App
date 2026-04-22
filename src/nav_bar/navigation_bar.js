@@ -1,14 +1,12 @@
-// src/nav_bar/navigation_bar.js
 import React, { createContext, useContext, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Text, View, StyleSheet, Image } from "react-native"; // Thêm Image
+import { Text, View, StyleSheet, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import IconManager, { APP_ICONS } from "../constants/icons";
-// import Footer from "./footer"; // Không dùng đến trong file này
 
-// Import các màn hình thật
+// Import các màn hình
 import HomeScreen from "../screens/Home";
 import SearchScreen from "../screens/Search";
 import LibraryScreen from "../screens/Library";
@@ -17,7 +15,7 @@ import MenuScreen from "../screens/Menu";
 import GameDetail from "../screens/GameDetail";
 import LoginScreen from "../screens/Login"; 
 import RegisterScreen from "../screens/Register";
-import Rnews from "../screens/Rnews"; // Đảm bảo bạn đã import màn hình tin tức chi tiết
+import Rnews from "../screens/Rnews";
 
 // Auth Context
 const AuthContext = createContext();
@@ -53,13 +51,12 @@ const MainTabs = () => {
       screenOptions={({ route }) => ({
         headerShown: true,
         headerTitleAlign: "center",
-        // THAY ĐỔI TẠI ĐÂY: Dùng component HeaderLogo thay vì Text
         headerTitle: (props) => <HeaderLogo {...props} />, 
         headerStyle: {
           backgroundColor: "#1f1f1f",
           borderBottomWidth: 1,
           borderBottomColor: "#333",
-          height: 60 + insets.top, // Tăng nhẹ chiều cao header cho đẹp
+          height: 60 + insets.top,
         },
 
         tabBarIcon: ({ focused }) => {
@@ -81,7 +78,7 @@ const MainTabs = () => {
         tabBarInactiveTintColor: "#888",
 
         tabBarStyle: {
-          height: 70 + insets.bottom, // Chỉnh lại height cho cân đối
+          height: 70 + insets.bottom,
           paddingBottom: insets.bottom + 8,
           paddingTop: 12,
           backgroundColor: "#1f1f1f",
@@ -121,11 +118,9 @@ const MainTabs = () => {
 };
 
 const NavigationBar = () => {
-  const { isLoggedIn } = useAuth(); // Lấy trạng thái từ Context
+  const { isLoggedIn } = useAuth();
 
   return (
-    // AuthProvider nên bao bọc ở cấp cao nhất trong App.js, 
-    // nếu đặt ở đây hãy đảm bảo có thẻ mở <AuthProvider>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!isLoggedIn ? (
         // Cụm màn hình khi CHƯA đăng nhập
@@ -138,7 +133,7 @@ const NavigationBar = () => {
         <>
           <Stack.Screen name="Main" component={MainTabs} />
           
-          {/* Màn hình Chi tiết game với Header của bạn mình */}
+          {/* Màn hình Chi tiết game */}
           <Stack.Screen 
             name="GameDetail" 
             component={GameDetail} 

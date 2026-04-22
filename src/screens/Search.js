@@ -10,7 +10,6 @@ const formatPrice = (price) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
 };
 
-// 1. TÁCH HEADER RA THÀNH COMPONENT RIÊNG (Nằm ngoài Search)
 const ListHeader = memo(({ searchText, setSearchText, categories, selectedCategory, setSelectedCategory }) => {
   
   const handleSearchText = (text) => {
@@ -32,7 +31,6 @@ const ListHeader = memo(({ searchText, setSearchText, categories, selectedCatego
         placeholderTextColor="#888"
         value={searchText}
         onChangeText={handleSearchText}
-        // Giữ bàn phím không bị ẩn
         autoFocus={searchText.length > 0} 
       />
       
@@ -82,7 +80,6 @@ export default function Search({ navigation }) {
       <FlatList
         data={filteredGames}
         keyExtractor={(item) => item.id.toString()}
-        // 2. SỬ DỤNG COMPONENT ĐÃ TÁCH
         ListHeaderComponent={
           <ListHeader 
             searchText={searchText}
@@ -97,22 +94,22 @@ export default function Search({ navigation }) {
         renderItem={({ item }) => (
         <TouchableOpacity 
           style={styles.gameItem}
-          onPress={() => navigation.navigate('GameDetail', { game: item })} // Gọi điều hướng và gửi dữ liệu game
+          onPress={() => navigation.navigate('GameDetail', { game: item })}
         >
           <ImageBackground 
             source={GAME_IMAGES[item.image]} 
             style={styles.itemImageBackground}
             resizeMode="cover"
-            imageStyle={{ opacity: 0.5 }} // Độ mờ tổng thể (để dễ đọc text)
+            imageStyle={{ opacity: 0.5 }}
           >
-            {/* 2. Lớp gradient mờ dần từ trái (đen) sang phải (trong suốt) */}
+            {/* Lớp gradient mờ dần từ trái sang phải */}
             <LinearGradient
               colors={['rgba(31, 31, 31, 1)', 'rgba(31, 31, 31, 0.4)', 'transparent']} 
               start={{ x: 0, y: 0.5 }} // Bắt đầu từ mép trái giữa
               end={{ x: 1, y: 0.5 }}   // Kết thúc ở mép phải giữa
               style={styles.gradientOverlay}
             >
-              {/* 3. Nội dung text (nằm trên lớp mờ) */}
+              {/* Nội dung text */}
               <View style={styles.textContainer}>
                 <View>
                   <Text style={styles.gameTitle}>{item.title}</Text>
@@ -144,7 +141,7 @@ const styles = StyleSheet.create({
   gamePrice: { color: "#fff", fontWeight: 'bold' },
   itemImageBackground: {
     width: '100%',
-    height: 105, // Đặt chiều cao cố định cho ô game
+    height: 105,
   },
   gradientOverlay: {
     flex: 1,
