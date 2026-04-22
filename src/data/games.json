@@ -8,7 +8,8 @@
       "price": 1250000,
       "image": "../../assets/anh/elden_ring.png",
       "youtube_id": "AKXiKBnzpBQ",
-      "description": "Một trò chơi nhập vai hành động kỳ ảo trong một thế giới rộng lớn đầy rẫy hiểm nguy."
+      "description": "Một trò chơi nhập vai hành động kỳ ảo trong một thế giới rộng lớn đầy rẫy hiểm nguy.",
+      "isOwned": true
     },
     {
       "id": 2,
@@ -78,7 +79,8 @@
       "price": 250000,
       "image": "../../assets/anh/hollow_knight.png",
       "youtube_id": "UAO2urG23S4",
-      "description": "Khám phá vương quốc côn trùng cổ xưa bị lãng quên."
+      "description": "Khám phá vương quốc côn trùng cổ xưa bị lãng quên.",
+      "isOwned": true
     },
     {
       "id": 9,
@@ -128,7 +130,8 @@
       "price": 0,
       "image": "../../assets/anh/genshin.png",
       "youtube_id": "TAlKhARUcoY",
-      "description": "Khám phá thế giới Teyvat rộng lớn."
+      "description": "Khám phá thế giới Teyvat rộng lớn.",
+      "isOwned": true
     },
     {
       "id": 14,

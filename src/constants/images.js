@@ -21,6 +21,7 @@ export const GAME_IMAGES = {
   "../../assets/anh/gt7.png": require("../../assets/anh/gt7.png"),
   "../../assets/anh/sekiro.png": require("../../assets/anh/sekiro.png"),
   "../../assets/anh/hades.png": require("../../assets/anh/hades.png"),
+  "../../assets/anh/Mixigaming-Logo.jpg": require("../../assets/anh/Mixigaming-Logo.jpg"),
 };
 export const NEWS_IMAGES = {
   "../assets/images/news/p01.jpg": require("../../assets/anh/news/p01.jpg"),

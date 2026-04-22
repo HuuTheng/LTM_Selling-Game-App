@@ -15,6 +15,8 @@ import LibraryScreen from "../screens/Library";
 import NewsScreen from "../screens/News";
 import MenuScreen from "../screens/Menu";
 import GameDetail from "../screens/GameDetail";
+import LoginScreen from "../screens/Login"; 
+import RegisterScreen from "../screens/Register";
 import Rnews from "../screens/Rnews"; // Đảm bảo bạn đã import màn hình tin tức chi tiết
 
 // Auth Context
@@ -119,30 +121,44 @@ const MainTabs = () => {
 };
 
 const NavigationBar = () => {
+  const { isLoggedIn } = useAuth(); // Lấy trạng thái từ Context
+
   return (
-    <AuthProvider>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Main" component={MainTabs} />
+    // AuthProvider nên bao bọc ở cấp cao nhất trong App.js, 
+    // nếu đặt ở đây hãy đảm bảo có thẻ mở <AuthProvider>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {!isLoggedIn ? (
+        // Cụm màn hình khi CHƯA đăng nhập
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+        </>
+      ) : (
+        // Cụm màn hình khi ĐÃ đăng nhập
+        <>
+          <Stack.Screen name="Main" component={MainTabs} />
+          
+          {/* Màn hình Chi tiết game với Header của bạn mình */}
+          <Stack.Screen 
+            name="GameDetail" 
+            component={GameDetail} 
+            options={{ 
+              headerShown: true,
+              headerTitle: "Chi tiết game",
+              headerStyle: { backgroundColor: '#1f1f1f' },
+              headerTintColor: '#00f5ff'
+            }} 
+          />
 
-        <Stack.Screen 
-          name="GameDetail" 
-          component={GameDetail} 
-          options={{ 
-            headerShown: true,
-            headerTitle: "Chi tiết game",
-            headerStyle: { backgroundColor: '#1f1f1f' },
-            headerTintColor: '#00f5ff'
-          }} 
-        />
-
-        {/* THÊM MÀN HÌNH CHI TIẾT TIN TỨC NẾU CHƯA CÓ */}
-        <Stack.Screen 
-          name="Rnews" 
-          component={Rnews} 
-          options={{ headerShown: false }} 
-        />
-      </Stack.Navigator>
-    </AuthProvider>
+          {/* Màn hình Chi tiết tin tức */}
+          <Stack.Screen 
+            name="Rnews" 
+            component={Rnews} 
+            options={{ headerShown: false }} 
+          />
+        </>
+      )}
+    </Stack.Navigator>
   );
 };
 

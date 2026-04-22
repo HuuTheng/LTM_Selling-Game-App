@@ -15,7 +15,8 @@ import { GAME_IMAGES } from '../constants/images';
 
 const { width } = Dimensions.get('window');
 
-const formatPrice = (price) => {
+const formatPrice = (price, isOwned) => {
+  if (isOwned) return "Đã có sẵn";
   if (price === 0) return "Miễn phí";
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
 };
@@ -130,18 +131,35 @@ export default function GameDetail({ route }) {
           </View>
         </View>
 
-        {/* Info Section */}
+        {/* Info Section - Đã tích hợp logic Đã có sẵn */}
         <View style={styles.infoSection}>
           <Text style={styles.gameName}>{game.title}</Text>
           <Text style={styles.studioText}>{game.studio}</Text>
-          <Text style={styles.priceText}>{formatPrice(game.price)}</Text>
-          <TouchableOpacity style={styles.buyNowBtn}>
-            <Text style={styles.buyNowText}>MUA NGAY</Text>
+          
+          {/* Giá tiền: Chuyển sang màu xám nếu đã sở hữu */}
+          <Text style={[styles.priceText, game.isOwned && { color: '#888' }]}>
+            {formatPrice(game.price, game.isOwned)}
+          </Text>
+
+          {/* Nút bấm: Đổi màu xám nhạt, đổi chữ và khóa khi đã có sẵn */}
+          <TouchableOpacity 
+            style={[
+              styles.buyNowBtn, 
+              game.isOwned && { backgroundColor: '#555' } 
+            ]}
+            disabled={game.isOwned}
+          >
+            <Text style={styles.buyNowText}>
+              {game.isOwned ? "ĐÃ CÓ SẴN" : "MUA NGAY"}
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.addToCartBtn}>
-            <Text style={styles.addToCartText}>THÊM VÀO GIỎ HÀNG</Text>
-          </TouchableOpacity>
+          {/* Chỉ hiển thị nút Thêm vào giỏ hàng nếu chưa có game */}
+          {!game.isOwned && (
+            <TouchableOpacity style={styles.addToCartBtn}>
+              <Text style={styles.addToCartText}>THÊM VÀO GIỎ HÀNG</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Description & Categories */}

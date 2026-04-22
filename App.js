@@ -2,12 +2,19 @@ import React from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
 import { NavigationContainer, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import FlashMessage from "react-native-flash-message"; 
 
-// Import từ các file của bạn
+// --- PHẦN IMPORT CÁC MÀN HÌNH (Quan trọng nhất) ---
+import Home from './src/screens/Home';      // Đã thêm để sửa lỗi "Property Home doesn't exist"
+import Login from './src/screens/Login';    // Đảm bảo có file này
+import Register from './src/screens/Register'; 
+import Rnews from "./src/screens/Rnews";
+import GameDetail from './src/screens/GameDetail'; 
+
+// Import NavigationBar và AuthProvider từ file nav_bar
+// Lưu ý: Chỉ import một lần duy nhất để tránh lỗi "already been declared"
 import NavigationBar, { AuthProvider } from "./src/nav_bar/navigation_bar";
-import Rnews from "./src/screens/Rnews";// Đảm bảo đường dẫn này đúng với vị trí file Rnews.js
 
-// Khởi tạo Stack
 const Stack = createNativeStackNavigator();
 
 const CustomDarkTheme = {
@@ -25,25 +32,35 @@ const CustomDarkTheme = {
 export default function App() {
   return (
     <View style={styles.container}>
-      {/* Để StatusBar màu đen đồng bộ với nền App */}
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
 
       <AuthProvider>
         <NavigationContainer theme={CustomDarkTheme}>
           <Stack.Navigator 
-            screenOptions={{ 
-              headerShown: false, // Ẩn cái thanh tiêu đề trắng/xám mặc định đi
-              animation: 'slide_from_right' // Hiệu ứng lướt sang trang đọc báo
-            }}
+            initialRouteName="HomeGuest"
+            screenOptions={{ headerShown: false }} // Xóa chữ HOME to đùng
           >
-            {/* 1. Màn hình chính là cái thanh NavigationBar của bạn */}
-            <Stack.Screen name="MainStack" component={NavigationBar} />
-
-            {/* 2. Màn hình Rnews nằm "chờ" ở đây, khi nào nhấn tin tức mới gọi nó */}
+            
+            {/* Trang chủ cho khách - Không có thanh điều hướng dưới */}
+            <Stack.Screen name="HomeGuest" component={Home} />
+            
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="Rnews" component={Rnews} />
+            <Stack.Screen name="GameDetail" component={GameDetail} />
+            
+            {/* Khi đăng nhập xong mới nhảy vào đây để có TabBar */}
+            <Stack.Screen name="MainStack" component={NavigationBar} />
+            
           </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>
+
+      <FlashMessage 
+        position="top" 
+        floating={true} 
+        style={{ marginTop: 10, borderRadius: 12 }} 
+      />
     </View>
   );
 }
