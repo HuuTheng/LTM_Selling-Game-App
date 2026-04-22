@@ -12,39 +12,42 @@ import {
 } from "react-native";
 
 import newsData from "../data/news.json";
+import { NEWS_IMAGES } from "../constants/images"; // <-- ĐÃ THÊM
 
 const { width } = Dimensions.get("window");
-const BANNER_H = width * 1.7; // Tỉ lệ cao ráo cho banner
+const BANNER_H = width * 1.7; 
 const BANNER_W = width;
 
-export default function News({ navigation }) { // <-- ĐÃ THÊM: { navigation }
+export default function News({ navigation }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef(null);
 
   // --- LOGIC DỮ LIỆU ---
+  // Lấy 5 bài đầu làm Banner
   const bannerArticles = newsData.slice(0, 5);
   const bannerIds = bannerArticles.map(item => item.id);
   const remainingData = newsData.filter(item => !bannerIds.includes(item.id));
 
   const shuffle = (array) => [...array].sort(() => Math.random() - 0.5);
 
+  // Lấy 5 bài ngẫu nhiên cho mục Tin Mới Nhất
   const randomNews = shuffle(remainingData).slice(0, 5);
   const randomNewsIds = randomNews.map(item => item.id);
 
   const availableForCats = remainingData.filter(item => !randomNewsIds.includes(item.id));
 
+  // Lọc theo Tags từ dữ liệu JSON của bạn
   const tinGameArticles = availableForCats
     .filter(item => item.tags.includes("tin-game"))
-    .slice(0, 3);
+    .slice(0, 4);
 
   const pcConsoleArticles = availableForCats
     .filter(item => item.tags.includes("pc-console") && !tinGameArticles.map(i => i.id).includes(item.id))
-    .slice(0, 3);
+    .slice(0, 4);
 
   // --- HÀM CHUYỂN TRANG ---
   const handlePress = (article) => {
-    // Điều hướng sang trang Rnews với dữ liệu bài viết tương ứng
     navigation.navigate('Rnews', { article: article });
   };
 
@@ -65,13 +68,18 @@ export default function News({ navigation }) { // <-- ĐÃ THÊM: { navigation }
     setActiveIndex(currentIndex);
   };
 
+  // --- RENDER BANNER ---
   const renderBannerItem = ({ item }) => (
     <TouchableOpacity 
       activeOpacity={0.9} 
       style={styles.bannerItem}
-      onPress={() => handlePress(item)} // <-- ĐÃ THÊM: Sự kiện nhấn cho banner
+      onPress={() => handlePress(item)}
     >
-      <Image source={{ uri: item.thumbnail }} style={styles.bannerImage} />
+      {/* THAY ĐỔI: Gọi ảnh từ NEWS_IMAGES mapping */}
+      <Image 
+        source={NEWS_IMAGES[item.thumbnail]} 
+        style={styles.bannerImage} 
+      />
       <View style={styles.bannerOverlay}>
         <View style={styles.tagContainer}>
           <Text style={styles.tagText}>{item.tags[0]?.toUpperCase()}</Text>
@@ -82,6 +90,7 @@ export default function News({ navigation }) { // <-- ĐÃ THÊM: { navigation }
     </TouchableOpacity>
   );
 
+  // --- RENDER DANH SÁCH TIN TỨC ---
   const RenderSection = (title, data) => (
     <View style={styles.sectionContainer}>
       <Text style={styles.sectionTitle}>{title}</Text>
@@ -90,9 +99,13 @@ export default function News({ navigation }) { // <-- ĐÃ THÊM: { navigation }
           key={item.id} 
           style={styles.newsCard} 
           activeOpacity={0.8}
-          onPress={() => handlePress(item)} // <-- ĐÃ THÊM: Sự kiện nhấn cho tin tức bên dưới
+          onPress={() => handlePress(item)}
         >
-          <Image source={{ uri: item.thumbnail }} style={styles.newsThumbnail} />
+          {/* THAY ĐỔI: Gọi ảnh từ NEWS_IMAGES mapping */}
+          <Image 
+            source={NEWS_IMAGES[item.thumbnail]} 
+            style={styles.newsThumbnail} 
+          />
           <View style={styles.newsContent}>
             <Text style={styles.newsTag}>{item.tags[0]}</Text>
             <Text style={styles.newsHeadline}>{item.title}</Text>
@@ -129,19 +142,16 @@ export default function News({ navigation }) { // <-- ĐÃ THÊM: { navigation }
         <View style={styles.pagination}>
           {bannerArticles.map((_, index) => {
             const inputRange = [(index - 1) * BANNER_W, index * BANNER_W, (index + 1) * BANNER_W];
-            
             const dotWidth = scrollX.interpolate({
               inputRange,
               outputRange: [8, 30, 8],
               extrapolate: "clamp",
             });
-
             const dotColor = scrollX.interpolate({
               inputRange,
               outputRange: ["#ffffff", "#00f5ff", "#ffffff"],
               extrapolate: "clamp",
             });
-
             const opacity = scrollX.interpolate({
               inputRange,
               outputRange: [0.5, 1, 0.5],
@@ -169,7 +179,7 @@ export default function News({ navigation }) { // <-- ĐÃ THÊM: { navigation }
         {pcConsoleArticles.length > 0 && RenderSection("THỂ LOẠI: PC & CONSOLE", pcConsoleArticles)}
       </View>
       
-      <View style={{ height: 80 }} />
+      <View style={{ height: 100 }} />
     </ScrollView>
   );
 }
