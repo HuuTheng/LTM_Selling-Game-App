@@ -327,4 +327,4 @@ const styles = StyleSheet.create({
     color: '#00f5ff', 
     fontSize: 12 
   },
-});s
+});
