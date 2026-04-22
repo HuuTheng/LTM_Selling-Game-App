@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-  StatusBar,
-} from 'react-native';
-import { WebView } from 'react-native-webview';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
+import YoutubePlayer from "react-native-youtube-iframe";
+import { GAME_IMAGES } from '../constants/images';
 
 const { width } = Dimensions.get('window');
 
@@ -19,94 +11,66 @@ const formatPrice = (price) => {
 };
 
 export default function GameDetail({ route }) {
-  const { game } = route.params; // Nhận dữ liệu từ Search.js
-
-  // Mặc định hiện Trailer nếu có youtube_id
+  const { game } = route.params;
   const [activeMedia, setActiveMedia] = useState(game.youtube_id ? 'video' : 'image');
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      
-      <ScrollView showsVerticalScrollIndicator={true} contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
         
-        {/* --- Phần Media (Sửa lỗi YouTube ở đây) --- */}
+        {/* Media Section */}
         <View style={styles.mediaContainer}>
           <View style={styles.mainMedia}>
             {activeMedia === 'video' && game.youtube_id ? (
-              <WebView
-                javaScriptEnabled={true}
-                domStorageEnabled={true}
-                allowsFullscreenVideo={true}
-                allowsInlineMediaPlayback={true} // QUAN TRỌNG: Cho phép phát ngay trong app
-                mediaPlaybackRequiresUserAction={false} // Cho phép tự động load
-                originWhitelist={['*']}
-                // Dùng link thật từ JSON
-                source={{ 
-                  uri: `https://www.youtube.com/embed/${game.youtube_id}?origin=http://localhost:8081&enablejsapi=1&widgetid=1`,
-                  headers: {
-                    'Referer': 'https://www.youtube.com'
-                  }
-                }}                
-                style={styles.video}
+              <YoutubePlayer
+                height={width * 9 / 16}
+                play={false}
+                videoId={game.youtube_id}
               />
             ) : (
               <Image 
-                source={{ uri: game.image }} 
+                source={GAME_IMAGES[game.image]} 
                 style={styles.video} 
                 resizeMode="cover" 
               />
             )}
           </View>
 
-          {/* Nút bấm để chuyển qua lại giữa Trailer và Ảnh */}
           <View style={styles.thumbnailRow}>
             {game.youtube_id && (
-              <TouchableOpacity 
-                onPress={() => setActiveMedia('video')}
-                style={[styles.thumbnailBtn, activeMedia === 'video' && styles.activeThumb]}
-              >
+              <TouchableOpacity onPress={() => setActiveMedia('video')} style={[styles.thumbnailBtn, activeMedia === 'video' && styles.activeThumb]}>
                 <View style={styles.thumbPlaceholder}><Text style={styles.thumbText}>TRAILER</Text></View>
               </TouchableOpacity>
             )}
-            <TouchableOpacity 
-              onPress={() => setActiveMedia('image')}
-              style={[styles.thumbnailBtn, activeMedia === 'image' && styles.activeThumb]}
-            >
+            <TouchableOpacity onPress={() => setActiveMedia('image')} style={[styles.thumbnailBtn, activeMedia === 'image' && styles.activeThumb]}>
               <Text style={[styles.thumbText, {textAlign: 'center', marginTop: 12}]}>ẢNH</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* --- Thông tin cơ bản --- */}
+        {/* Info Section */}
         <View style={styles.infoSection}>
           <Text style={styles.gameName}>{game.title}</Text>
           <Text style={styles.studioText}>{game.studio}</Text>
           <Text style={styles.priceText}>{formatPrice(game.price)}</Text>
-
-          <TouchableOpacity style={styles.buyNowBtn}>
-            <Text style={styles.buyNowText}>MUA NGAY</Text>
-          </TouchableOpacity>
+          <TouchableOpacity style={styles.buyNowBtn}><Text style={styles.buyNowText}>MUA NGAY</Text></TouchableOpacity>
         </View>
 
-        {/* --- PHẦN GIỚI THIỆU (Đảm bảo hiển thị) --- */}
+        {/* Description & Categories */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>GIỚI THIỆU TRÒ CHƠI</Text>
           <Text style={styles.descriptionText}>{game.description}</Text>
         </View>
 
-        {/* --- PHẦN THỂ LOẠI --- */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>THỂ LOẠI</Text>
           <View style={styles.categoryContainer}>
             {game.categories.map((cat, index) => (
-              <View key={index} style={styles.categoryBadge}>
-                <Text style={styles.categoryText}>{cat}</Text>
-              </View>
+              <View key={index} style={styles.categoryBadge}><Text style={styles.categoryText}>{cat}</Text></View>
             ))}
           </View>
         </View>
-
       </ScrollView>
     </View>
   );
@@ -114,7 +78,7 @@ export default function GameDetail({ route }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#121212' },
-  scrollContent: { paddingBottom: 50 }, // Padding cuối để không bị che
+  scrollContent: { paddingBottom: 50 },
   mediaContainer: { marginBottom: 20 },
   mainMedia: { width: width, height: width * 9 / 16, backgroundColor: '#000' },
   video: { flex: 1 },

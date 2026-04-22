@@ -1,0 +1,24 @@
+// src/constants/images.js
+
+export const GAME_IMAGES = {
+  "../../assets/anh/elden_ring.png": require("../../assets/anh/elden_ring.png"),
+  "../../assets/anh/witcher3.png": require("../../assets/anh/witcher3.png"),
+  "../../assets/anh/re_village.png": require("../../assets/anh/re_village.png"),
+  "../../assets/anh/fifa23.png": require("../../assets/anh/fifa23.png"),
+  "../../assets/anh/gow_ragnarok.png": require("../../assets/anh/gow_ragnarok.png"),
+  "../../assets/anh/civ6.png": require("../../assets/anh/civ6.png"),
+  "../../assets/anh/dead_space.png": require("../../assets/anh/dead_space.png"),
+  "../../assets/anh/hollow_knight.png": require("../../assets/anh/hollow_knight.png"),
+  "../../assets/anh/cyberpunk.png": require("../../assets/anh/cyberpunk.png"),
+  "../../assets/anh/aoe4.png": require("../../assets/anh/aoe4.png"),
+  "../../assets/anh/outlast2.png": require("../../assets/anh/outlast2.png"),
+  "../../assets/anh/nba2k23.png": require("../../assets/anh/nba2k23.png"),
+  "../../assets/anh/genshin.png": require("../../assets/anh/genshin.png"),
+  "../../assets/anh/stardew.png": require("../../assets/anh/stardew.png"),
+  "../../assets/anh/ghost_tsushima.png": require("../../assets/anh/ghost_tsushima.png"),
+  "../../assets/anh/warhammer3.png": require("../../assets/anh/warhammer3.png"),
+  "../../assets/anh/sh2.png": require("../../assets/anh/sh2.png"),
+  "../../assets/anh/gt7.png": require("../../assets/anh/gt7.png"),
+  "../../assets/anh/sekiro.png": require("../../assets/anh/sekiro.png"),
+  "../../assets/anh/hades.png": require("../../assets/anh/hades.png"),
+};
