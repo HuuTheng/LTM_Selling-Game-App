@@ -6,14 +6,14 @@ import { Text, View, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import IconManager, { APP_ICONS } from "../constants/icons";
-import Footer from "./footer";           // Import Footer
+import Footer from "./footer";
 
 // Import các màn hình thật
 import HomeScreen from "../screens/Home";
 import SearchScreen from "../screens/Search";
 import LibraryScreen from "../screens/Library";
 import NewsScreen from "../screens/News";
-import MenuScreen from "../screens/Menu";        // ← Đây là file Menu.js thật
+import MenuScreen from "../screens/Menu";
 import GameDetail from "../screens/GameDetail";
 
 // Auth Context
@@ -61,7 +61,7 @@ const MainTabs = () => {
               <IconManager 
                 name={iconConfig.name} 
                 type={iconConfig.type} 
-                size={focused ? 38 : 34} 
+                size={focused ? 28 : 20} 
                 color={focused ? "#00f5ff" : "#888"} 
               />
             </View>
@@ -120,7 +120,7 @@ const NavigationBar = () => {
           name="GameDetail" 
           component={GameDetail} 
           options={{ 
-            headerShown: true, // Hiện tiêu đề và nút quay lại
+            headerShown: true,
             headerTitle: "Chi tiết game",
             headerStyle: { backgroundColor: '#1f1f1f' },
             headerTintColor: '#00f5ff'
