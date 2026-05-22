@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import data from '../data/games'; 
 import { GAME_IMAGES } from '../constants/images';
-import { useAuth } from '../nav_bar/navigation_bar'; // Đảm bảo đường dẫn này đúng với dự án của bạn
+import { useAuth } from '../context/AuthContext';
 
 const Home = ({ navigation }) => {
   const { isLoggedIn, isDarkMode } = useAuth();

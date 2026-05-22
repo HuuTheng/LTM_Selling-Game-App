@@ -14,7 +14,7 @@ import {
 
 import newsData from "../data/news.json";
 import { NEWS_IMAGES } from "../constants/images";
-import { useAuth } from "../nav_bar/navigation_bar"; // Import useAuth để dùng Theme
+import { useAuth } from '../context/AuthContext';
 
 const { width } = Dimensions.get("window");
 const BANNER_H = width * 1.7; 

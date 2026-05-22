@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from "react-native-flash-message";
-import { useAuth } from '../nav_bar/navigation_bar'; // Import Theme context
+import { useAuth } from '../context/AuthContext';
 
 const Register = ({ navigation }) => {
   const { isDarkMode } = useAuth(); // Lấy trạng thái theme

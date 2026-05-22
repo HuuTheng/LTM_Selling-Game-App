@@ -7,7 +7,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import gamesData from "../data/games.json";
 import { GAME_IMAGES } from "../constants/images";
-import { useAuth } from "../nav_bar/navigation_bar";
+import { useAuth } from '../context/AuthContext';
 
 export default function Library({ navigation }) {
   const { isDarkMode } = useAuth();

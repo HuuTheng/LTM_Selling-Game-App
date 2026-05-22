@@ -7,7 +7,7 @@ import {
 import YoutubePlayer from "react-native-youtube-iframe";
 import { useIsFocused } from '@react-navigation/native'; // Thêm để theo dõi khi màn hình hiển thị
 import { GAME_IMAGES } from '../constants/images';
-import { useAuth } from '../nav_bar/navigation_bar'; 
+import { useAuth } from '../context/AuthContext';
 
 const { width } = Dimensions.get('window');
 

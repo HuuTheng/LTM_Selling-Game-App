@@ -5,7 +5,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import IconManager, { APP_ICONS } from '../constants/icons'; // Import APP_ICONS
 import Footer from '../nav_bar/footer';
-import { useAuth } from '../nav_bar/navigation_bar';
+import { useAuth } from '../context/AuthContext';
 
 const MenuScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();

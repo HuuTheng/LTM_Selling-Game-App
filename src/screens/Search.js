@@ -4,7 +4,7 @@ import gamesData from "../data/games.json";
 import { LinearGradient } from 'expo-linear-gradient'; 
 import { ImageBackground } from 'react-native';
 import { GAME_IMAGES } from '../constants/images';
-import { useAuth } from "../nav_bar/navigation_bar"; // Import context theme
+import { useAuth } from '../context/AuthContext';
 
 const formatPrice = (price) => {
   if (price === 0) return "Miễn phí";

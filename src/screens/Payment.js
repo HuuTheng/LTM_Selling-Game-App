@@ -64,7 +64,9 @@ export default function Payment({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.scrollContent}
+         showsVerticalScrollIndicator={false}
+         >
         <Text style={styles.headerTitle}>XÁC NHẬN THANH TOÁN</Text>
 
         {/* Danh sách các game đang chờ thanh toán */}
@@ -117,7 +119,7 @@ export default function Payment({ route, navigation }) {
         <View style={styles.summaryContainer}>
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Số lượng:</Text>
-            <Text style={styles.summaryValue}>{gamesToBuy.length} game</Text>
+            <Text style={styles.summaryValue}>{gamesToBuy.length}</Text>
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Giá gốc:</Text>
@@ -145,7 +147,7 @@ export default function Payment({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#121212' },
-  scrollContent: { padding: 20 },
+  scrollContent: { paddingHorizontal: 20, paddingBottom: 20, paddingTop: 20, },
   headerTitle: { color: '#fff', fontSize: 20, fontWeight: 'bold', marginBottom: 25, textAlign: 'center' },
   
   /* Card Game */
