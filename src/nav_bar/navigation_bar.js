@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { 
@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from '@expo/vector-icons';
+import { AuthProvider, useAuth } from "../context/AuthContext";
 
 // CHỈNH SỬA: Import useNavigation để sửa lỗi ReferenceError
 import { useNavigation } from '@react-navigation/native'; 
@@ -25,25 +26,6 @@ import RegisterScreen from "../screens/Register";
 import Cart from '../screens/Cart'; 
 
 // --- 1. AUTH CONTEXT ---
-const AuthContext = createContext();
-
-export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true); 
-  const [userEmail, setUserEmail] = useState(""); 
-
-  return (
-    <AuthContext.Provider value={{ 
-      isLoggedIn, setIsLoggedIn, 
-      isDarkMode, setIsDarkMode,
-      userEmail, setUserEmail 
-    }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-export const useAuth = () => useContext(AuthContext);
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -56,7 +38,7 @@ const CustomHeaderLeft = () => (
       source={require("../../assets/anh/Mixigaming-Logo.jpg")}
       style={styles.logoCircle}
     />
-    <Text style={styles.storeText}>STORE</Text>
+    <Text style={styles.storeText}>MIXIGAMING</Text>
   </View>
 );
 
@@ -73,7 +55,7 @@ const CustomHeaderRight = () => {
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={[styles.authText, { color: iconColor }]}>Đăng nhập</Text>
         </TouchableOpacity>
-        <Text style={{ color: iconColor, marginHorizontal: 5 }}>|</Text>
+        <Text style={{ color: iconColor, marginHorizontal: 5, marginRight: 20 }}>|</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={[styles.authText, { color: iconColor }]}>Đăng ký</Text>
         </TouchableOpacity>
@@ -83,6 +65,13 @@ const CustomHeaderRight = () => {
 
   return (
     <View style={styles.headerRight}>
+      <TouchableOpacity
+        style={{ marginRight: 12 }}
+        onPress={() => navigation.navigate("CART")}
+      >
+        <Ionicons name="cart-outline" size={28} color={iconColor} />
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={() => setShowPopup(true)}>
         <Ionicons name="person-circle-outline" size={32} color={iconColor} />
       </TouchableOpacity>
@@ -218,12 +207,12 @@ export default NavigationBar;
 
 // --- STYLES ---
 const styles = StyleSheet.create({
-  headerLeft: { flexDirection: 'row', alignItems: 'center', marginLeft: 15 },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', marginLeft: 15},
   logoCircle: { width: 35, height: 35, borderRadius: 17.5, borderWidth: 1, borderColor: '#00f5ff' },
-  storeText: { color: '#00f5ff', fontSize: 18, fontWeight: 'bold', marginLeft: 10, letterSpacing: 1 },
-  headerRight: { marginRight: 15 },
-  authGroup: { flexDirection: 'row', alignItems: 'center' },
-  authText: { fontSize: 13, fontWeight: '600' },
+  storeText: { color: '#00f5ff', fontSize: 13, fontWeight: 'bold', marginLeft: 10, letterSpacing: 1},
+  headerRight: { marginRight: 15,  flexDirection: 'row', alignItems: 'center', },
+  authGroup: { flexDirection: 'row', alignItems: 'center', marginRight: 5 },
+  authText: { fontSize: 13, fontWeight: '600', marginRight: 15 },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-start', alignItems: 'flex-end' },
   popupMenu: {
     marginTop: 65, 

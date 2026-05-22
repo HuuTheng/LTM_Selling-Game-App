@@ -13,7 +13,8 @@ import GameDetail from './src/screens/GameDetail';
 import Payment from './src/screens/Payment';
 import Library from './src/screens/Library';
 
-import NavigationBar, { AuthProvider } from "./src/nav_bar/navigation_bar";
+import NavigationBar from "./src/nav_bar/navigation_bar";
+import { AuthProvider } from "./src/context/AuthContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,12 +38,12 @@ export default function App() {
       <AuthProvider>
         <NavigationContainer theme={CustomDarkTheme}>
           <Stack.Navigator 
-            initialRouteName="HomeGuest"
-            screenOptions={{ headerShown: false }} // Xóa chữ HOME to đùng
+            initialRouteName="MainStack"
+            screenOptions={{ headerShown: false }}
           >
             
             {/* Trang chủ cho khách - Không có thanh điều hướng dưới */}
-            <Stack.Screen name="HomeGuest" component={Home} />
+            <Stack.Screen name="MainStack" component={NavigationBar} />
             
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
@@ -50,9 +51,6 @@ export default function App() {
             <Stack.Screen name="GameDetail" component={GameDetail} />
             <Stack.Screen name="Payment" component={Payment} />
             <Stack.Screen name="Library" component={Library} />
-
-            {/* Khi đăng nhập xong mới nhảy vào đây để có TabBar */}
-            <Stack.Screen name="MainStack" component={NavigationBar} />
             
           </Stack.Navigator>
         </NavigationContainer>

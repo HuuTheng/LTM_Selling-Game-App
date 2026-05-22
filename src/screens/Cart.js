@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Ionicons } from '@expo/vector-icons';
-import { useAuth } from '../nav_bar/navigation_bar';
+import { useAuth } from '../context/AuthContext';
 import { GAME_IMAGES } from '../constants/images';
 import gamesData from "../data/games.json";
 

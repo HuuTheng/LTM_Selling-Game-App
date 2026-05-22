@@ -14,7 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 // Import mapping và Theme context
 import { NEWS_IMAGES } from "../constants/images"; 
-import { useAuth } from "../nav_bar/navigation_bar"; 
+import { useAuth } from '../context/AuthContext';
 
 const { width } = Dimensions.get("window");
 

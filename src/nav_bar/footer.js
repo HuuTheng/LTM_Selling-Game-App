@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Image } from 'react-native';
 // Import useAuth để lấy trạng thái theme
-import { useAuth } from '../nav_bar/navigation_bar'; 
+import { useAuth } from "../context/AuthContext";
 
 const Footer = () => {
   const { isDarkMode } = useAuth(); // Lấy trạng thái sáng/tối
